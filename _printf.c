@@ -8,55 +8,40 @@
 * excluding the null byte used to end output to strings
 */
 
-int _printf (const char *format, ...)
+int _printf(const char *format, ...)
 {
 va_list args;
 int count = 0;
-char *str;
-char c;
+char c, *str;
+int num;
 
-if (format == NULL || (format[0] == '%' && format[1] == '\0'))
-return (-1);
-
+if (!format || (format[0] == '%' && !format[1])) return (-1);
 va_start(args, format);
-
 while (*format)
 {
 if (*format == '%')
 {
 format++;
-if (*format == '\0')
-return(-1);
-
+if (!*format) return(-1);
 if (*format == 'c')
 {
-c = (char)va_arg(args, int);
-count += _putchar(c);
+c = (char)va_arg(args, int); count += _putchar(c);
 }
 else if (*format == 's')
 {
-str = va_arg(args, char *);
-if (str == NULL)
-str = "(null)";
-count += print_string(str);
+str = va_arg(args, char *); count += print_string(str);
 }
-else if (*format == '%')
+else if (*format == 'd' || *format == 'i')
 {
-count += _putchar('%');
+	num = va_arg(args, int); count += print_number(num);
 }
+else if (*format == '%'); count += _putchar('%');
 else
 {
-count += _putchar('%');
-count += _putchar(*format);
+count += _putchar('%'); count += _putchar(*format);
 }
+else count += _putchar(*format); format++;
 }
-else
-{
-count += _putchar(*format);
-}
-format++;
-}
-
 va_end(args);
 return (count);
 }
