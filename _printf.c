@@ -9,17 +9,15 @@
 int _printf(const char *format, ...)
 {
 va_list args;
-int i;
-int count;
+int i = 0;
+int count = 0;
 
-if (format == NULL)
+if (format == 0)
 {
 return (-1);
 }
 
 va_start(args, format);
-i = 0;
-count = 0;
 
 while (format[i] != '\0')
 {
@@ -38,6 +36,10 @@ count += print_char(args);
 else if (format[i] == 's')
 {
 count += print_string(args);
+}
+else if (format[i] == 'd' || format[i] == 'i')
+{
+count += print_int(args);
 }
 else if (format[i] == '%')
 {
