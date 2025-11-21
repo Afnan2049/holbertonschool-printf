@@ -1,0 +1,138 @@
+#include "main.h"
+
+/**
+* print_binary - prints an unsigned int in binary
+* @args: list of arguments
+* Return: number of characters printed
+*/
+int print_binary(va_list args)
+{
+unsigned int n = va_arg(args, unsigned int);
+unsigned int a[32];
+int i = 0, count = 0;
+char z = '0', one = '1';
+
+if (n == 0)
+return (write(1, &z, 1));
+
+while (n > 0)
+{
+a[i] = n % 2;
+n /= 2;
+i++;
+}
+for (i = i - 1; i >= 0; i--)
+{
+if (a[i] == 0)
+count += write(1, &z, 1);
+else
+count += write(1, &one, 1);
+}
+return (count);
+}
+
+/**
+* print_unsigned - prints an unsigned integer
+* @args: list of arguments
+* Return: number of characters printed
+*/
+int print_unsigned(va_list args)
+{
+unsigned int n = va_arg(args, unsigned int);
+unsigned int num = n;
+int count = 0, i = 0;
+char buf[11];
+
+if (n == 0)
+return (write(1, "0", 1));
+while (num > 0)
+{
+buf[i] = (num % 10) + '0';
+num /= 10;
+i++;
+}
+while (i > 0)
+count += write(1, &buf[--i], 1);
+return (count);
+}
+
+/**
+* print_octal - prints an unsigned int in octal
+* @args: list of arguments
+* Return: number of characters printed
+*/
+int print_octal(va_list args)
+{
+unsigned int n = va_arg(args, unsigned int);
+unsigned int num = n;
+int count = 0, i = 0;
+char buf[11];
+
+if (n == 0)
+return (write(1, "0", 1));
+while (num > 0)
+{
+buf[i] = (num % 8) + '0';
+num /= 8;
+i++;
+}
+while (i > 0)
+count += write(1, &buf[--i], 1);
+return (count);
+}
+
+/**
+* print_hex_lower - prints an unsigned int in hex (lowercase)
+* @args: list of arguments
+* Return: number of characters printed
+*/
+int print_hex_lower(va_list args)
+{
+unsigned int n = va_arg(args, unsigned int);
+int count = 0, i = 0, rem;
+char buf[9];
+
+if (n == 0)
+return (write(1, "0", 1));
+while (n > 0)
+{
+rem = n % 16;
+if (rem < 10)
+buf[i] = rem + '0';
+else
+buf[i] = rem - 10 + 'a';
+n /=%s/^\s\+//g 16;
+i++;
+}
+while (i > 0)
+count += write(1, &buf[--i], 1);
+return (count);
+}
+
+/**
+* print_hex_upper - prints an unsigned int in hex (uppercase)
+* @args: list of arguments
+* Return: number of characters printed
+*/
+int print_hex_upper(va_list args)
+{
+unsigned int n = va_arg(args, unsigned int);
+int count = 0, i = 0, rem;
+char buf[9];
+
+if (n == 0)
+return (write(1, "0", 1));
+while (n > 0)
+{
+rem = n % 16;
+if (rem < 10)
+buf[i] = rem + '0';
+else
+buf[i] = rem - 10 + 'A';
+n /= 16;
+i++;
+}
+while (i > 0)
+count += write(1, &buf[--i], 1);
+return (count);
+}
