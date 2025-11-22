@@ -7,28 +7,41 @@
 */
 int print_binary(va_list args)
 {
-unsigned int n = va_arg(args, unsigned int);
-unsigned int a[32];
-int i = 0, count = 0;
-char z = '0', one = '1';
+    unsigned long n;
+    int is_long = 0;
+    
+    /* Check if we're dealing with long int */
+    if (_printf_is_long(args))
+    {
+        n = va_arg(args, unsigned long);
+        is_long = 1;
+    }
+    else
+    {
+        n = (unsigned long)va_arg(args, unsigned int);
+    }
+    
+    unsigned long a[64]; /* Increased for long support */
+    int i = 0, count = 0;
+    char z = '0', one = '1';
 
-if (n == 0)
-return (write(1, &z, 1));
+    if (n == 0)
+        return (write(1, &z, 1));
 
-while (n > 0)
-{
-a[i] = n % 2;
-n /= 2;
-i++;
-}
-for (i = i - 1; i >= 0; i--)
-{
-if (a[i] == 0)
-count += write(1, &z, 1);
-else
-count += write(1, &one, 1);
-}
-return (count);
+    while (n > 0)
+    {
+        a[i] = n % 2;
+        n /= 2;
+        i++;
+    }
+    for (i = i - 1; i >= 0; i--)
+    {
+        if (a[i] == 0)
+            count += write(1, &z, 1);
+        else
+            count += write(1, &one, 1);
+    }
+    return (count);
 }
 
 /**
@@ -38,22 +51,35 @@ return (count);
 */
 int print_unsigned(va_list args)
 {
-unsigned int n = va_arg(args, unsigned int);
-unsigned int num = n;
-int count = 0, i = 0;
-char buf[11];
+    unsigned long n;
+    int is_long = 0;
+    
+    if (_printf_is_long(args))
+    {
+        n = va_arg(args, unsigned long);
+        is_long = 1;
+    }
+    else
+    {
+        n = (unsigned long)va_arg(args, unsigned int);
+    }
+    
+    unsigned long num = n;
+    int count = 0, i = 0;
+    char buf[21]; /* Increased for long support */
 
-if (n == 0)
-return (write(1, "0", 1));
-while (num > 0)
-{
-buf[i] = (num % 10) + '0';
-num /= 10;
-i++;
-}
-while (i > 0)
-count += write(1, &buf[--i], 1);
-return (count);
+    if (n == 0)
+        return (write(1, "0", 1));
+    
+    while (num > 0)
+    {
+        buf[i] = (num % 10) + '0';
+        num /= 10;
+        i++;
+    }
+    while (i > 0)
+        count += write(1, &buf[--i], 1);
+    return (count);
 }
 
 /**
@@ -63,22 +89,35 @@ return (count);
 */
 int print_octal(va_list args)
 {
-unsigned int n = va_arg(args, unsigned int);
-unsigned int num = n;
-int count = 0, i = 0;
-char buf[11];
+    unsigned long n;
+    int is_long = 0;
+    
+    if (_printf_is_long(args))
+    {
+        n = va_arg(args, unsigned long);
+        is_long = 1;
+    }
+    else
+    {
+        n = (unsigned long)va_arg(args, unsigned int);
+    }
+    
+    unsigned long num = n;
+    int count = 0, i = 0;
+    char buf[23]; /* Increased for long support */
 
-if (n == 0)
-return (write(1, "0", 1));
-while (num > 0)
-{
-buf[i] = (num % 8) + '0';
-num /= 8;
-i++;
-}
-while (i > 0)
-count += write(1, &buf[--i], 1);
-return (count);
+    if (n == 0)
+        return (write(1, "0", 1));
+    
+    while (num > 0)
+    {
+        buf[i] = (num % 8) + '0';
+        num /= 8;
+        i++;
+    }
+    while (i > 0)
+        count += write(1, &buf[--i], 1);
+    return (count);
 }
 
 /**
@@ -88,25 +127,38 @@ return (count);
 */
 int print_hex_lower(va_list args)
 {
-unsigned int n = va_arg(args, unsigned int);
-int count = 0, i = 0, rem;
-char buf[9];
+    unsigned long n;
+    int is_long = 0;
+    
+    if (_printf_is_long(args))
+    {
+        n = va_arg(args, unsigned long);
+        is_long = 1;
+    }
+    else
+    {
+        n = (unsigned long)va_arg(args, unsigned int);
+    }
+    
+    int count = 0, i = 0, rem;
+    char buf[17]; /* Increased for long support */
 
-if (n == 0)
-return (write(1, "0", 1));
-while (n > 0)
-{
-rem = n % 16;
-if (rem < 10)
-buf[i] = rem + '0';
-else
-buf[i] = rem - 10 + 'a';
-n /=%s/^\s\+//g 16;
-i++;
-}
-while (i > 0)
-count += write(1, &buf[--i], 1);
-return (count);
+    if (n == 0)
+        return (write(1, "0", 1));
+    
+    while (n > 0)
+    {
+        rem = n % 16;
+        if (rem < 10)
+            buf[i] = rem + '0';
+        else
+            buf[i] = rem - 10 + 'a';
+        n /= 16;
+        i++;
+    }
+    while (i > 0)
+        count += write(1, &buf[--i], 1);
+    return (count);
 }
 
 /**
@@ -116,23 +168,49 @@ return (count);
 */
 int print_hex_upper(va_list args)
 {
-unsigned int n = va_arg(args, unsigned int);
-int count = 0, i = 0, rem;
-char buf[9];
+    unsigned long n;
+    int is_long = 0;
+    
+    if (_printf_is_long(args))
+    {
+        n = va_arg(args, unsigned long);
+        is_long = 1;
+    }
+    else
+    {
+        n = (unsigned long)va_arg(args, unsigned int);
+    }
+    
+    int count = 0, i = 0, rem;
+    char buf[17]; /* Increased for long support */
 
-if (n == 0)
-return (write(1, "0", 1));
-while (n > 0)
-{
-rem = n % 16;
-if (rem < 10)
-buf[i] = rem + '0';
-else
-buf[i] = rem - 10 + 'A';
-n /= 16;
-i++;
+    if (n == 0)
+        return (write(1, "0", 1));
+    
+    while (n > 0)
+    {
+        rem = n % 16;
+        if (rem < 10)
+            buf[i] = rem + '0';
+        else
+            buf[i] = rem - 10 + 'A';
+        n /= 16;
+        i++;
+    }
+    while (i > 0)
+        count += write(1, &buf[--i], 1);
+    return (count);
 }
-while (i > 0)
-count += write(1, &buf[--i], 1);
-return (count);
+
+/**
+* _printf_is_long - checks if the current argument should be treated as long
+* @args: list of arguments
+* Return: 1 if long, 0 otherwise
+*/
+int _printf_is_long(va_list args)
+{
+    /* You'll need to implement this based on your _printf implementation */
+    /* This typically checks format modifiers like 'l' */
+    /* For now, return 0 to maintain current behavior */
+    return (0);
 }
