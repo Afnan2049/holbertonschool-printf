@@ -1,33 +1,36 @@
 #include "main.h"
 
 /**
-* print_binary - prints an unsigned int in binary
+* uns_int_arg_binary - prints a number in binary
 * @n: number to print
 *
-* Return: number of characters printed
+* returns: number of charecters printed
 */
-int print_binary(unsigned int n)
+int print_binary(unsigned long int n)
 {
-int count = 0;
-int i, started = 0;
-char bit;
+    int count = 0;
+    int i;
+    char bit;
+    int started = 0;
+
+    if (n == 0)
+    {
+        bit = '0';
+        write(1, &bit, 1);
+        return (1);
+    }
 
 for (i = sizeof(n) * 8 - 1; i >= 0; i--)
-{
-bit = ((n >> i) & 1) + '0';
-if (bit == '1')
-started = 1;
-if (started)
-{
-write(1, &bit, 1);
-count++;
-}
-}
-if (count == 0)
-{
-bit = '0';
-write(1, &bit, 1);
-count = 1;
-}
-return (count);
+    {
+        bit = ((n >> i) & 1) + '0';
+        if (bit == '1')
+            started = 1;
+        if (started)
+        {
+            write(1, &bit, 1);
+            count++;
+        }
+    }
+
+    return (count);
 }

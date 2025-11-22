@@ -43,7 +43,7 @@ count += print_int(args);
 }
 else if (format[i] == 'b')
 {
-count += print_binary(va_arg(args, unsigned int));
+count += print_binary(va_arg(args, unsigned long int));
 }
 else if (format[i] == '%')
 {
