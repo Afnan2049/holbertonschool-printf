@@ -1,11 +1,11 @@
 #include "main.h"
 
 /**
- * _printf - produces output according to a format
- * @format: the format string
- *
- * Return: number of characters printed
- */
+* _printf - produces output according to a format
+* @format: the format string
+*
+* Return: number of characters printed
+*/
 int _printf(const char *format, ...)
 {
 va_list args;
@@ -40,6 +40,10 @@ count += print_string(args);
 else if (format[i] == 'd' || format[i] == 'i')
 {
 count += print_int(args);
+}
+else if (format[i] == 'b')
+{
+count += print_binary(va_arg(args, unsigned int));
 }
 else if (format[i] == '%')
 {
