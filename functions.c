@@ -1,23 +1,30 @@
 #include "main.h"
 
 /**
- * print_char - prints a single character
- * @args: list of arguments
- *
- * Return: number of characters printed
- */
-int print_char(va_list args)
+* print_char - prints a single character
+* @args: list of arguments
+*
+* Return: number of characters printed
+*/
+int print_char(va_list args, char *buffer, int *buf_index)
 {
 char c = va_arg(args, int);
-return (write(1, &c, 1));
+buffer[(*buf_index)++] = c;
+
+if (*buf_index == 1024)
+{
+write(1, buffer, *buf_index);
+*buf_index = 0;
+}
+return (1);
 }
 
 /**
- * print_string - prints a string
- * @args: list of arguments
- *
- * Return: number of characters printed
- */
+* print_string - prints a string
+* @args: list of arguments
+*
+* Return: number of characters printed
+*/
 int print_string(va_list args)
 {
 char *s = va_arg(args, char *);
@@ -35,11 +42,11 @@ return (i);
 }
 
 /**
- * print_int - prints an integer
- * @args: list of arguments
- *
- * Return: number of characters printed
- */
+* print_int - prints an integer
+* @args: list of arguments
+*
+* Return: number of characters printed
+*/
 int print_int(va_list args)
 {
 int n = va_arg(args, int);
