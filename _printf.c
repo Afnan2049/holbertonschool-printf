@@ -49,6 +49,22 @@ else if (format[i] == '%')
 {
 count += write(1, "%", 1);
 }
+else if (format[i] == 'u')
+{
+count += print_unsigned(args);
+}
+else if (format[i] == 'o')
+{
+count += print_octal(args);
+}
+else if (format[i] == 'x')
+{
+count += print_hex_lower(args);
+}
+else if (format[i] == 'X')
+{
+count += print_hex_upper(args);
+}
 else
 {
 count += write(1, "%", 1);
