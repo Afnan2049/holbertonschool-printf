@@ -41,6 +41,10 @@ else if (format[i] == 'd' || format[i] == 'i')
 {
 count += print_int(args);
 }
+else if (format[i] == 'b')
+{
+count += print_binary(va_arg(args, unsigned int));
+}
 else if (format[i] == '%')
 {
 count += write(1, "%", 1);
